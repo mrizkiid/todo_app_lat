@@ -12,6 +12,8 @@ class Tampilan extends StatefulWidget {
 }
 
 class _TampilanState extends State<Tampilan> {
+  final controllers = TextEditingController();
+
   List toDoList = [
     ['Solat', false],
     ['Mengaji', true]
@@ -23,12 +25,30 @@ class _TampilanState extends State<Tampilan> {
     });
   }
 
+  void addTask() {
+    setState(() {
+      toDoList.add([controllers.text, false]);
+    });
+    Navigator.of(context).pop();
+  }
+
   void dialogBoxMethod() {
     showDialog(
         context: context,
         builder: (context) {
-          return DialogBoxALert();
+          return DialogBoxALert(
+            controllers: controllers,
+            onsave: addTask,
+            oncancel: () => Navigator.of(context).pop(),
+          );
         });
+  }
+
+  void deleteMethod(int index) {
+    setState(() {
+      toDoList.removeAt(index);
+    });
+    print('$index index');
   }
 
   @override
@@ -47,11 +67,15 @@ class _TampilanState extends State<Tampilan> {
         itemCount: toDoList.length,
         itemBuilder: (context, index) {
           return TodoTile(
-              taskname: toDoList[index][0],
-              onchanged: (p0) {
-                checkboxChanged(p0, index);
-              },
-              taskCompleted: toDoList[index][1]);
+            taskname: toDoList[index][0],
+            onchanged: (p0) {
+              checkboxChanged(p0, index);
+            },
+            taskCompleted: toDoList[index][1],
+            ondelete: (context) {
+              deleteMethod(index);
+            },
+          );
         },
       ),
     );

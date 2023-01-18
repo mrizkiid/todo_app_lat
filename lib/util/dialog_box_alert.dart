@@ -4,7 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:todo_app_lat/util/mybutton.dart';
 
 class DialogBoxALert extends StatelessWidget {
-  const DialogBoxALert({super.key});
+  final controllers;
+  final VoidCallback onsave;
+  final VoidCallback oncancel;
+  const DialogBoxALert(
+      {super.key,
+      required this.controllers,
+      required this.onsave,
+      required this.oncancel});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +23,7 @@ class DialogBoxALert extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             TextField(
+              controller: controllers,
               decoration: InputDecoration(
                   // border: OutlineInputBorder(
                   //     borderSide: BorderSide(color: Colors.yellow)),
@@ -23,6 +31,12 @@ class DialogBoxALert extends StatelessWidget {
                   fillColor: Colors.white,
                   focusColor: Colors.white,
                   filled: true,
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      controllers.clear();
+                    },
+                    icon: Icon(Icons.clear),
+                  ),
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white)),
                   focusedBorder: OutlineInputBorder(
@@ -31,13 +45,13 @@ class DialogBoxALert extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                MyButton(teks: 'Add', onchanged: () {}),
+                MyButton(teks: 'Add', onchanged: onsave),
                 SizedBox(
                   width: 8,
                 ),
                 MyButton(
                   teks: 'Cancel',
-                  onchanged: () {},
+                  onchanged: oncancel,
                 ),
               ],
             )
