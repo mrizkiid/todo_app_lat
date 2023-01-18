@@ -1,9 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+// import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_app_lat/page/tampilan.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+
+  late Box box;
+  //open box
+  box = await Hive.openBox('mybox');
   runApp(const MyApp());
 }
 

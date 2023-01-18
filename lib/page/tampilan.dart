@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:todo_app_lat/database/database.dart';
 import 'package:todo_app_lat/util/dialog_box_alert.dart';
 import 'package:todo_app_lat/util/todo_tile.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class Tampilan extends StatefulWidget {
   const Tampilan({super.key});
@@ -13,22 +15,36 @@ class Tampilan extends StatefulWidget {
 
 class _TampilanState extends State<Tampilan> {
   final controllers = TextEditingController();
+  final _mybox = Hive.box('mybox');
+  DatabaseClass db = DatabaseClass();
 
-  List toDoList = [
-    ['Solat', false],
-    ['Mengaji', true]
-  ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    if (_mybox.get('OPEN') == null) {
+      db.initDatabase();
+    } else {
+      db.loadDatabase();
+    }
+    super.initState();
+  }
+
+  // List toDoList = [
+  //   ['Solat', false],
+  //   ['Mengaji', true]
+  // ];
 
   void checkboxChanged(bool? value, int index) {
     setState(() {
-      toDoList[index][1] = !toDoList[index][1];
+      db.toDoList[index][1] = !db.toDoList[index][1];
     });
   }
 
   void addTask() {
     setState(() {
-      toDoList.add([controllers.text, false]);
+      db.toDoList.add([controllers.text, false]);
     });
+    controllers.clear();
     Navigator.of(context).pop();
   }
 
@@ -46,9 +62,8 @@ class _TampilanState extends State<Tampilan> {
 
   void deleteMethod(int index) {
     setState(() {
-      toDoList.removeAt(index);
+      db.toDoList.removeAt(index);
     });
-    print('$index index');
   }
 
   @override
@@ -64,17 +79,15 @@ class _TampilanState extends State<Tampilan> {
         centerTitle: true,
       ),
       body: ListView.builder(
-        itemCount: toDoList.length,
+        itemCount: db.toDoList.length,
         itemBuilder: (context, index) {
           return TodoTile(
-            taskname: toDoList[index][0],
+            taskname: db.toDoList[index][0],
             onchanged: (p0) {
               checkboxChanged(p0, index);
             },
-            taskCompleted: toDoList[index][1],
-            ondelete: (context) {
-              deleteMethod(index);
-            },
+            taskCompleted: db.toDoList[index][1],
+            ondelete: (p0) => deleteMethod(index),
           );
         },
       ),
