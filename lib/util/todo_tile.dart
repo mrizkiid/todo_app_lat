@@ -1,15 +1,15 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable
 
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
 class TodoTile extends StatelessWidget {
   final String taskname;
-  final bool? taskCompleted;
-  Function(bool?)? onchanged;
+  final bool taskCompleted;
+  final Function(bool?)? onchanged;
 
-  TodoTile(
+  const TodoTile(
       {super.key,
       required this.taskname,
       required this.taskCompleted,
@@ -39,7 +39,12 @@ class TodoTile extends StatelessWidget {
           Text(
             taskname,
             style: TextStyle(
-                color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                color: Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                decoration: taskCompleted
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none),
           ),
         ]),
       ),
