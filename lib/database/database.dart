@@ -11,6 +11,8 @@ class DatabaseClass {
       ['sekolah', false],
       ['mengaji', false]
     ];
+    // openDatabase();
+    _mybox.put('OPEN', toDoList);
   }
 
   //load database

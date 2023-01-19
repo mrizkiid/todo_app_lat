@@ -6,11 +6,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_app_lat/page/tampilan.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 
-  late Box box;
+  // late Box box;
   //open box
-  box = await Hive.openBox('mybox');
+  var box = await Hive.openBox('mybox');
   runApp(const MyApp());
 }
 

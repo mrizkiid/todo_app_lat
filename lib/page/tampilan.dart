@@ -44,6 +44,7 @@ class _TampilanState extends State<Tampilan> {
     setState(() {
       db.toDoList.add([controllers.text, false]);
     });
+    db.openDatabase();
     controllers.clear();
     Navigator.of(context).pop();
   }
@@ -64,6 +65,7 @@ class _TampilanState extends State<Tampilan> {
     setState(() {
       db.toDoList.removeAt(index);
     });
+    db.openDatabase();
   }
 
   @override
